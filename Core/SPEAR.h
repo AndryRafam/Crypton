@@ -9,9 +9,9 @@ class SPEAR{
 		void folder();
 	public:
 		SPEAR(void);
-		std::string AES_256(std::string clr_msg);
-		std::string SERPENT_256(std::string clr_msg);
-		std::string TWOFISH_256(std::string clr_msg);
+		std::string AES_256(std::string clr_msg, std::string password, std::string choice);
+		std::string SERPENT_256(std::string clr_msg, std::string password, std::string choice);
+		std::string TWOFISH_256(std::string clr_msg, std::string password, std::string choice);
 		void run();
 		~SPEAR(void);
 };
