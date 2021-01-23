@@ -5,14 +5,18 @@
 
 class SPEAR{
 	private:
-		void about();
-		void folder();
-		void file();
 		bool file_check(std::string filename);
+		bool checkDigit(std::string str);
+		bool checkUpper(std::string str);
+		bool checkLower(std::string str);
+		bool checkSpecChar(std::string str);
+		bool checkPassword(std::string str);
+		
 	public:
 		SPEAR(void);
 		std::string AES_256(std::string clr_msg, std::string password, std::string choice);
-		void run();
+		void about();
+		void run(std::string choice);
 		~SPEAR(void);
 };
 
