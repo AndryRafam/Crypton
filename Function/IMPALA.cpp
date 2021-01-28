@@ -101,12 +101,12 @@ void IMPALA::run(){
 	char car;
 
 	std::cout << "\n";
-	std::cout << std::setw(14) << "" << "[ PRESS ENTER TO RUN ]";
+	std::cout << std::setw(14) << "" << Red << "[ PRESS ENTER TO RUN ]" << Reset;
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	system("clear");
 	about();
 
-	std::cout << "\n\n";
+	std::cout << "\n";
 	std::cout << " [ ENCRYPT OR DECRYPT ? (e/E or d/D) ] > ";
 	std::getline(std::cin,choice);
 
@@ -116,7 +116,7 @@ void IMPALA::run(){
 	if(choice == "e" || choice == "E"){
 
 		label:
-			std::cout << "\n\n";
+			std::cout << "\n";
 			std::cout << " [ FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension) ] > ";
 			std::getline(std::cin,filename);
 
@@ -136,7 +136,7 @@ void IMPALA::run(){
 			if(!checkPassword(password)){ // password conditions
 				system("clear");
 				about();
-				std::cout << "\n\n";
+				std::cout << "\n";
 				std::cout << Red << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. " << Reset << "\n\n";
 				goto condition;
 			}
@@ -151,21 +151,21 @@ void IMPALA::run(){
 		system("clear");
 		about();
 		std::cout << "\n";
-		std::cout << Red << " FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Also check your file to see the result)" << "\n\n";
+		std::cout << Red << std::setw(14) << "" << "FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
 
-		std::ifstream Ifile;
+		/*std::ifstream Ifile;
 		std::string line;
 		Ifile.open(filename);
 		while(getline(Ifile,line)){
 			std::cout << line;
 		}
 		Ifile.close();
-		std::cout << "\n\n";
+		std::cout << "\n\n";*/
 	}
 	else{
 
 		labs:
-			std::cout << "\n\n";
+			std::cout << "\n";
 			std::cout << " [ FILE TO DECRYPT (Input: /Absolute/path/to/file.extension) ] > ";
 			std::getline(std::cin,filename);
 
@@ -192,7 +192,7 @@ void IMPALA::run(){
 		system("clear");
 		about();
 		std::cout << "\n";
-		std::cout << Red << " FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
+		std::cout << Red << std::setw(14) << "" << "FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
 	}
 	return;
 }
