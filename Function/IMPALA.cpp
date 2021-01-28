@@ -153,6 +153,7 @@ void IMPALA::run(){
 		std::cout << "\n";
 		std::cout << Red << std::setw(14) << "" << "FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
 
+		// Uncomment this section if you want to output the answer on screen.
 		/*std::ifstream Ifile;
 		std::string line;
 		Ifile.open(filename);
