@@ -5,13 +5,13 @@
 
 class IMPALA{
 	private:
-		bool file_check(std::string filename);
-		bool checkDigit(std::string str);
-		bool checkUpper(std::string str);
-		bool checkLower(std::string str);
-		bool checkSpecChar(std::string str);
-		bool checkPassword(std::string str);
-		void about();
+		inline bool fileCheck(const std::string &filename);
+		inline bool checkDigit(std::string str);
+		inline bool checkUpper(std::string str);
+		inline bool checkLower(std::string str);
+		inline bool checkSpecChar(std::string str);
+		inline bool checkPassword(std::string str);
+		inline void about();
 		
 	public:
 		IMPALA(void);
