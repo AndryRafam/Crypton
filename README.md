@@ -9,7 +9,7 @@ AES (formely known as Rijndael from its designer Vincent Rijmen and Joan Daemen)
 is the winner of AES competition (Advanced Encryption Standard competition) organized
 by NIST (National Institute of Standards and Technology). AES has been adopted by the US government and is now used worldwide.
 
-<h2 align="left"> PASSWORD RULES </h2>
+<h3 align="left"> PASSWORD RULES </h3>
 		
 		1) Password must be at least 12 Characters long (At least 12 characters).
 		2) Password must contains at least ONE Upper character.
