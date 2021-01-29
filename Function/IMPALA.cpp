@@ -205,6 +205,10 @@ void IMPALA::run(){
 			std::cout << Red << " COMMAND NOT RECONGNIZED. PLEASE CHOOSE BETWEEN ENCRYPT (e/E) or DECRYPT (d/D)." << Reset;
 			goto validChoice; // while choice is not (e/E) or (d/D)
 		}
+	std::cout << "\n";
+	std::cout << std::setw(14) << "" << "[ PRESS ENTER TO CONTINUE ]" << Reset;
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	std::cout << "\n";
 	return;
 }
 
