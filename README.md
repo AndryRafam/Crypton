@@ -17,7 +17,7 @@ by NIST (National Institute of Standards and Technology). AES has been adopted b
 	4) Password must contains at least ONE Digit.
 	5) Password must contains at least ONE Special Character.
 	
-<h3 align="left"> HOW TO RUN (Command line Debian distros) </h3>
+<h3 align="left"> HOW TO RUN (Command line for Debian based) </h3>
 
 	1) In command line, go to the program directories.
 	2) Type < make > to compile and build the impala file.
