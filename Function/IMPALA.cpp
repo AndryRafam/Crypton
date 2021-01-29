@@ -38,8 +38,11 @@ inline bool IMPALA::checkPassword(std::string str){
 }
 
 inline bool IMPALA::fileCheck(const std::string &filename){
-	struct stat buffer;
-	return (stat (filename.c_str(), &buffer)==0);
+	for(auto i = 0; filename[i]; i++){
+		if(filename[i]=='.')
+			return true;
+	}
+	return false;
 }
 
 std::string IMPALA::aes(std::string text, std::string password, std::string choice){
@@ -138,7 +141,7 @@ void IMPALA::run(){
 					system("clear");
 					about();
 					std::cout << "\n";
-					std::cout << Red << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. " << Reset << "\n\n";
+					std::cout << Red << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << "\n\n";
 					goto condition;
 				}
 			while(infile.get(car)){
