@@ -1,3 +1,8 @@
+![](https://img.shields.io/badge/Code-C++-orange.svg?style=plastic&logo=c%2B%2B)
+![](https://img.shields.io/badge/OS-Linux-orange.svg?style=plastic&logo=Linux)
+![](https://img.shields.io/badge/Algorithm-AES-orange.svg?style=plastic&logo)
+![](https://img.shields.io/badge/Algorithm-SHA-orange.svg?style=plastic&logo)
+
 <h1 align="center"> IMPALA </h1>
 IMPALA is a file encryption (and decryption) program based on AES-256 and SHA-256.
 AES (formely known as Rijndael from its designer Vincent Rijmen and Joan Daemen),
