@@ -1,11 +1,25 @@
-SRC:= $(wildcard Function/AES.cpp) \
-	  $(wildcard Function/IMPALA.cpp) \
-	  $(wildcard Main/Main.cpp)
+TARGET ?= impala
+SRC_DIRS ?= ./Core \
+	    ./Function \
+	    ./Main
 
+SRCS := $(shell find $(SRC_DIRS) -name *.cpp)
+OBJS := $(addsuffix .o,$(basename $(SRCS)))
+DEPS := $(OBJS:.o=.d)
+
+INC_DIRS := $(shell find $(SRC_DIRS) -type d)
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP
 
 LDFLAGS:= -lcryptopp
 
-OBJECTS:= $(SRC:.cpp=.o)
+$(TARGET): $(OBJS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
-impala: $(OBJECTS)
-	 	$(CXX) -o $@ $^ $(LDFLAGS)
+
+.PHONY: clean
+clean:
+	$(RM) $(TARGET) $(OBJS) $(DEPS)
+
+-include $(DEPS)
