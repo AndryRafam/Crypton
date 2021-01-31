@@ -18,6 +18,7 @@ by NIST (National Institute of Standards and Technology). AES has been adopted b
 	5) Password must contains at least ONE Special Character.
 	
 <h3 align="left"> HOW TO RUN (Command line for Debian based) </h3>
+In order to use the program, you must have already installed the library Crypto++ (CryptoPP) on your computer. https://www.cryptopp.com/
 
 	1) In command line, go to the program directories.
 	2) Type < make > to compile and build the impala file.
