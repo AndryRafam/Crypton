@@ -58,13 +58,13 @@ std::string IMPALA::aes(std::string text, std::string password, std::string choi
 			EAX<AES>::Encryption enc;
 			enc.SetKeyWithIV(key, AES::MAX_KEYLENGTH, key+AES::MAX_KEYLENGTH);
 			StringSource(text, true, new AuthenticatedEncryptionFilter(enc, new StringSink(ciphertext)));
-			StringSource(ciphertext, true, new HexEncoder(new StringSink(res)));
+			//StringSource(ciphertext, true, new HexEncoder(new StringSink(res)));
 		}
 		else{
 			EAX< AES >::Decryption dec;
 			dec.SetKeyWithIV(key, AES::MAX_KEYLENGTH, key+AES::MAX_KEYLENGTH);
-			StringSource(text, true, new HexDecoder(new StringSink(ciphertext)));
-			StringSource(ciphertext, true, new AuthenticatedDecryptionFilter(dec, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+			//StringSource(text, true, new HexDecoder(new StringSink(ciphertext)));
+			StringSource(text, true, new AuthenticatedDecryptionFilter(dec, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
 		}
 	}
 	catch(Exception& ex){
@@ -72,7 +72,7 @@ std::string IMPALA::aes(std::string text, std::string password, std::string choi
 		return 0;
 	}
 	if(choice == "e" || choice == "E"){
-		return res;
+		return ciphertext;
 		
 	}
 	else{
@@ -104,16 +104,19 @@ void IMPALA::run(){
 	char car;
 
 	std::cout << "\n";
-	std::cout << std::setw(14) << "" << Red << "[ PRESS ENTER TO RUN ]" << Reset;
+	std::cout << std::setw(14) << "" << Red << "[ PRESS ENTER TO RUN ]" << Reset << std::flush;
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	std::cout << std::flush;
 	system("clear");
 	about();
 
 	validChoice: // choice must be (e/E) or (d/D)
 		std::cout << "\n";
-		std::cout << " [ ENCRYPT OR DECRYPT ? (e/E or d/D) ] > ";
-		std::getline(std::cin,choice);
+		std::cout << Blue << " [ ENCRYPT OR DECRYPT ? (e/E or d/D) ] > " << Reset << std::flush;
+		std::cin >> choice;
+		std::cin.ignore();
 
+		std::cout << std::flush;
 		system("clear");
 		about();
 
@@ -121,16 +124,17 @@ void IMPALA::run(){
 
 			label:
 				std::cout << "\n";
-				std::cout << " [ FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension) ] > ";
+				std::cout << Blue << " [ FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension) ] > " << Reset << std::flush;
 				std::getline(std::cin,filename);
 
 			std::ifstream infile;
 
 			if(!fileCheck(filename)){
+				std::cout << std::flush;
 				system("clear");
 				about();
 				std::cout << "\n";
-				std::cout << Red << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
+				std::cout << Red << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset << std::flush;
 				goto label; // while file doesn't exist repeat the process
 			}
 			infile.open(filename);
@@ -138,10 +142,11 @@ void IMPALA::run(){
 			condition: 
 				password = getpass(" [ PASSWORD ] > ");
 				if(!checkPassword(password)){ // password conditions
+					std::cout << std::flush;
 					system("clear");
 					about();
 					std::cout << "\n";
-					std::cout << Red << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << "\n\n";
+					std::cout << Red <<" SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << std::flush << "\n\n";
 					goto condition;
 				}
 			while(infile.get(car)){
@@ -152,10 +157,11 @@ void IMPALA::run(){
 			ofile << aes256.aes(clr_msg,password,choice);
 			ofile.close();
 
+			std::cout << std::flush;
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(14) << "" << "FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
+			std::cout << Red << std::setw(14) << "" <<" FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << std::flush << "\n\n";
 
 			// Uncomment this section if you want to output the answer on screen.
 			/*std::ifstream Ifile;
@@ -171,16 +177,17 @@ void IMPALA::run(){
 
 			labs:
 				std::cout << "\n";
-				std::cout << " [ FILE TO DECRYPT (Input: /Absolute/path/to/file.extension) ] > ";
+				std::cout << Blue << " [ FILE TO DECRYPT (Input: /Absolute/path/to/file.extension) ] > " << Reset << std::flush;
 				std::getline(std::cin,filename);
 
 			std::ifstream infile;
 
 			if(!fileCheck(filename)){
+				std::cout << std::flush;
 				system("clear");
 				about();
 				std::cout << "\n";
-				std::cout << Red << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
+				std::cout << Red << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset << std::flush;
 				goto labs; // while file doesn't exist repeat the process
 			}
 			infile.open(filename);
@@ -194,19 +201,21 @@ void IMPALA::run(){
 			ofile << aes256.aes(clr_msg,password,choice);
 			ofile.close();
 
+			std::cout << std::flush;
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(14) << "" << "FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
+			std::cout << Red << std::setw(14) << "" <<" FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << std::flush << "\n\n";	
 		}
 		else{
+			std::cout << std::flush;
 			system("clear");
 			about();
-			std::cout << Red << " COMMAND NOT RECONGNIZED. PLEASE CHOOSE BETWEEN ENCRYPT (e/E) or DECRYPT (d/D)." << Reset;
+			std::cout << Red << " COMMAND NOT RECONGNIZED. PLEASE CHOOSE BETWEEN ENCRYPT (e/E) or DECRYPT (d/D)." << Reset << std::flush;
 			goto validChoice; // while choice is not (e/E) or (d/D)
 		}
 	std::cout << "\n";
-	std::cout << std::setw(14) << "" << "[ PRESS ENTER TO CONTINUE ]" << Reset;
+	std::cout << std::setw(14) << "" << Blue << "[ PRESS ENTER TO CONTINUE ]" << Reset << std::flush;
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 	std::cout << "\n";
 	return;
