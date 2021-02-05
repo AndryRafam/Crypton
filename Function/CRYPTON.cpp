@@ -173,12 +173,10 @@ void CRYPTON::run(){
 			ofile << crypt.aserp(clr_msg,password,choice);
 			ofile.close();
 
-			std::cout << std::flush;
 			system("clear");
 			about();
 			std::cout << "\n";
 			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
-
 		}
 		else if(choice == "d"){
 
