@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <cctype>
 #include <algorithm>
-#include <filesystem>
 #include <sys/types.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/files.h>
