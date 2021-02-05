@@ -5,6 +5,8 @@
 
 <h1 align="center"> CRYPTON </h1>
 
+<h4 align="left"> Encrypting (Open your file to check the result) </h4>
+
 ![Output](https://github.com/AndryRafam/Program-Output/blob/master/crypton.gif)
 
 CRYPTON is a file double encryption (and decryption) program based on AES-256, Serpent-256 and SHA-256.
@@ -13,8 +15,6 @@ is the winner of AES competition (Advanced Encryption Standard competition) orga
 by NIST (National Institute of Standards and Technology). 
 SERPENT is ranked second behind AES.
 AES has been adopted by the US government and is now used worldwide.
-
-<h3 align="left"> Open your file to see the result </h3>
 
 <h3 align="left"> PASSWORD RULES </h3>
 
