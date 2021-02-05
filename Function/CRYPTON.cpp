@@ -113,7 +113,6 @@ inline void CRYPTON::about(){
 
 void CRYPTON::run(){
 
-	CRYPTON crypt;
 	about();
 	
 	std::string filename;
@@ -169,7 +168,7 @@ void CRYPTON::run(){
 			}
 			infile.close();
 			std::ofstream ofile(filename);
-			ofile << crypt.aserp(clr_msg,password,choice);
+			ofile << aserp(clr_msg,password,choice);
 			ofile.close();
 
 			system("clear");
@@ -203,7 +202,7 @@ void CRYPTON::run(){
 			}
 			infile.close();
 			std::ofstream ofile(filename);
-			ofile << crypt.aserp(clr_msg,password,choice);
+			ofile << aserp(clr_msg,password,choice);
 			ofile.close();
 
 			std::cout << std::flush;
