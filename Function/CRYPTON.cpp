@@ -133,86 +133,85 @@ void CRYPTON::run(){
 		std::cin >> choice;
 		std::cin.ignore();
 
-		if(choice == "e"){
+	if(choice == "e"){
 
-			label:
-				std::cout << "\n";
-				std::cout << std::setw(10) << "" << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
-				std::getline(std::cin,filename);
-
-			std::ifstream infile;
-
-			if(!fileCheck(filename)){
-				system("clear");
-				about();
-				std::cout << "\n";
-				std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
-				goto label; 
-			}
-			infile.open(filename);
+		label:
 			std::cout << "\n";
-			condition:
-				std::cout << std::setw(10) << "" << "(PASSWORD) > "; 
-				password = getpass("");
-				if(!checkPassword(password)){
-					system("clear");
-					about();
-					std::cout << "\n";
-					std::cout << Red << std::setw(10) << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << "\n\n";
-					goto condition;
-				}
-			while(infile.get(car)){
-				clr_msg+=car;	
-			}
-			infile.close();
-			std::ofstream ofile(filename);
-			ofile << aserp(clr_msg,password,choice);
-			ofile.close();
+			std::cout << std::setw(10) << "" << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
+			std::getline(std::cin,filename);
 
+		std::ifstream infile;
+
+		if(!fileCheck(filename)){
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
+			std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
+			goto label; 
 		}
-		else if(choice == "d"){
-
-			labs:
-				std::cout << "\n";
-				std::cout << std::setw(10) << "" << "(FILE TO DECRYPT (Input: /Absolute/path/to/file.extension)) > ";
-				std::getline(std::cin,filename);
-
-			std::ifstream infile;
-
-			if(!fileCheck(filename)){
-				system("clear");
-				about();
-				std::cout << "\n";
-				std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
-				goto labs;
-			}
-			infile.open(filename);
-			std::cout << "\n";
-			std::cout << std::setw(10) << "" << "(PASSWORD) > ";
+		infile.open(filename);
+		std::cout << "\n";
+		condition:
+			std::cout << std::setw(10) << "" << "(PASSWORD) > "; 
 			password = getpass("");
-			while(infile.get(car)){
-				clr_msg+=car;
+			if(!checkPassword(password)){
+				system("clear");
+				about();
+				std::cout << "\n";
+				std::cout << Red << std::setw(10) << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << "\n\n";
+				goto condition;
 			}
-			infile.close();
-			std::ofstream ofile(filename);
-			ofile << aserp(clr_msg,password,choice);
-			ofile.close();
+		while(infile.get(car)){
+			clr_msg+=car;	
+		}
+		infile.close();
+		std::ofstream ofile(filename);
+		ofile << aserp(clr_msg,password,choice);
+		ofile.close();
 
+		system("clear");
+		about();
+		std::cout << "\n";
+		std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
+	}
+	else if(choice == "d"){
+
+		labs:
+			std::cout << "\n";
+			std::cout << std::setw(10) << "" << "(FILE TO DECRYPT (Input: /Absolute/path/to/file.extension)) > ";
+			std::getline(std::cin,filename);
+
+		std::ifstream infile;
+
+		if(!fileCheck(filename)){
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
+			std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
+			goto labs;
 		}
-		else{
-			system("clear");
-			about();
-			std::cout << Red << std::setw(10) << "" <<"COMMAND NOT RECONGNIZED. PLEASE CHOOSE BETWEEN ENCRYPT or DECRYPT (e or d)." << Reset << std::endl;
-			goto validChoice;
+		infile.open(filename);
+		std::cout << "\n";
+		std::cout << std::setw(10) << "" << "(PASSWORD) > ";
+		password = getpass("");
+		while(infile.get(car)){
+			clr_msg+=car;
 		}
+		infile.close();
+		std::ofstream ofile(filename);
+		ofile << aserp(clr_msg,password,choice);
+		ofile.close();
+
+		system("clear");
+		about();
+		std::cout << "\n";
+		std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
+	}
+	else{
+		system("clear");
+		about();
+		goto validChoice;
+	}
 	std::cout << "\n";
 	return;
 }
