@@ -14,6 +14,8 @@ by NIST (National Institute of Standards and Technology).
 SERPENT is ranked second behind AES.
 AES has been adopted by the US government and is now used worldwide.
 
+<h3 align="left"> Open your file to see the result </h3>
+
 <h3 align="left"> PASSWORD RULES </h3>
 
 	1) Password must be at least 12 Characters long (At least 12 characters).
