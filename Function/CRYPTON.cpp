@@ -74,16 +74,16 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 			EAX<Serpent>::Encryption enc2;
 			enc1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
 			enc2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
-			StringSource(text, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(inter)));
-			StringSource(inter, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(ciphertext)));
+			StringSource(text, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(inter)));
+			StringSource(inter, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(ciphertext)));
 		}
 		else{
 			EAX<AES>::Decryption dec1;
 			EAX<Serpent>::Decryption dec2;
 			dec1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
 			dec2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
-			StringSource(text, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
-			StringSource(inter, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+			StringSource(text, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+			StringSource(inter, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
 		}
 	}
 	catch(Exception& ex){
