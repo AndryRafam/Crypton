@@ -124,7 +124,6 @@ void CRYPTON::run(){
 	std::cout << "\n";
 	std::cout << std::setw(10) << "" << Red << "[ PRESS ENTER TO RUN ]" << Reset;
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-	std::cout << std::flush;
 	system("clear");
 	about();
 
@@ -156,7 +155,6 @@ void CRYPTON::run(){
 				std::cout << std::setw(10) << "" << "(PASSWORD) > "; 
 				password = getpass("");
 				if(!checkPassword(password)){
-					std::cout << std::flush;
 					system("clear");
 					about();
 					std::cout << "\n";
@@ -186,7 +184,6 @@ void CRYPTON::run(){
 			std::ifstream infile;
 
 			if(!fileCheck(filename)){
-				std::cout << std::flush;
 				system("clear");
 				about();
 				std::cout << "\n";
@@ -205,11 +202,10 @@ void CRYPTON::run(){
 			ofile << aserp(clr_msg,password,choice);
 			ofile.close();
 
-			std::cout << std::flush;
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << std::flush << "\n\n";	
+			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
 		}
 		else{
 			system("clear");
