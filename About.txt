@@ -1,0 +1,19 @@
+	
+	 #############################################################
+	                                                            
+	  CRYPTON: File encryption program - Andry RAFAM ANDRIANJAFY 
+	                                                            
+	 #############################################################
+
+	   PROGRAM UNDER MIT license
+	
+ 	   First release date: 28 January 2021
+		
+	   # THE PASSWORD RULES #
+
+	   1) Password must be at least 12 Characters long (At least 12 characters).
+	   2) Password must contains at least ONE Upper character.
+	   3) Password must contains at least ONE Lower character.
+	   4) Password must contains at least ONE Digit.
+	   5) Password must contains at least ONE Special Character.
+	   ________________________________________________________________________
