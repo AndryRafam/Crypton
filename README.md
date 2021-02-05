@@ -5,7 +5,7 @@
 
 <h1 align="center"> CRYPTON </h1>
 
-https://github.com/AndryRafam/Program-Output/blob/master/crypton.gif
+![Output](https://github.com/AndryRafam/Program-Output/blob/master/crypton.gif)
 
 CRYPTON is a file double encryption (and decryption) program based on AES-256, Serpent-256 and SHA-256.
 AES (formely known as Rijndael from its designer Vincent Rijmen and Joan Daemen),
