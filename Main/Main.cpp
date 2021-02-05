@@ -1,19 +1,15 @@
 #include <iostream>
 
-#include "../Core/IMPALA.h"
+#include "../Core/CRYPTON.h"
 
 int main(int argc, char** argv){
-
-	// Checking the OS first
-
 	#ifdef __linux__
 		system("clear");
-		IMPALA ip;
-		ip.run();
+		CRYPTON crypt;
+		crypt.run();
 		return 0;
 	#else
-		std::cout << "\n";
-		std::cout << "OS IS NOT LINUX." << "\n\n";
+		std::cout << "\n\n";
 		return 0;
 	#endif
 }
