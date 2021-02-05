@@ -26,3 +26,7 @@ AES has been adopted by the US government and is now used worldwide.
 	3) Type ./exe to rune the program. Follow the instructions. 
 
 <h1 align="center"> FULL DISCLOSURE </h1>
+
+	THIS PROGRAM IS PROVIDED "AS IS", WITH NO WARRANTY OF ANY KIND.
+	IT IS INTENDED FIRST FOR PERSONAL USE, NOT FOR INDUSTRIAL USE.
+	THE AUTHOR DECLINES ALL RESPONSABILITIES FOR THE MISUSES OF THE PROGRAM.
