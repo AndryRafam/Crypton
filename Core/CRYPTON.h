@@ -11,12 +11,12 @@ class CRYPTON{
 		inline bool checkLower(std::string str);
 		inline bool checkSpecChar(std::string str);
 		inline bool checkPassword(std::string str);
-		std::string aserpCrypt(std::string clr_msg, std::string password);
-		std::string aserpDcrypt(std::string clr_msg, std::string password);
+		std::string aserp(std::string clr_msg, std::string password, std::string choice);
 		inline void about();
 		
 	public:
 		CRYPTON(void);
+		
 		void run();
 		~CRYPTON(void);
 };
