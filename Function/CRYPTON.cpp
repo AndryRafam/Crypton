@@ -59,8 +59,8 @@ inline bool CRYPTON::fileCheck(const std::string &filename){
 	return false;
 }
 
-std::string CRYPTON::aserpCrypt(std::string text, std::string password){
-	std::string inter, ciphertext;
+std::string CRYPTON::aserp(std::string text, std::string password, std::string choice){
+	std::string inter, ciphertext, recovered;
 	std::string iv(password+password);
 
 	try{
@@ -71,35 +71,32 @@ std::string CRYPTON::aserpCrypt(std::string text, std::string password){
 		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
 		EAX<AES>::Encryption enc1;
 		EAX<Serpent>::Encryption enc2;
-		enc1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
-		enc2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
-		StringSource(text, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(inter)));
-		StringSource(inter, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(ciphertext)));
+		EAX<AES>::Decryption dec1;
+		EAX<Serpent>::Decryption dec2;
+		if(choice == "e"){	
+			enc1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
+			enc2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
+			StringSource(text, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(inter)));
+			StringSource(inter, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(ciphertext)));
+		}
+		else{
+			dec1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
+			dec2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
+			StringSource(text, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+			StringSource(inter, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+		}
 	}
 	catch(Exception& ex){
-		std::cerr << "ERROR: " << ex.what() << "\n";
+		std::cerr << "ERROR: " << ex.what() << std::endl;
 		return 0;
 	}
-	return ciphertext;
-}
-
-std::string CRYPTON::aserpDcrypt(std::string text, std::string password){
-	std::string inter, recovered;
-	std::string iv(password+password);
-
-	SecByteBlock key1(AES::MAX_KEYLENGTH+AES::BLOCKSIZE);
-	SecByteBlock key2(Serpent::MAX_KEYLENGTH+Serpent::BLOCKSIZE);
-	HKDF<SHA256> hkdf;
-	hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
-	hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
-	EAX<AES>::Decryption dec1;
-	EAX<Serpent>::Decryption dec2;
-	dec1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
-	dec2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
-	StringSource(text, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
-	StringSource(inter, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
-
-	return recovered;
+	if(choice == "e"){
+		return ciphertext;
+		
+	}
+	else{
+		return recovered;
+	}
 }
 
 inline void CRYPTON::about(){
@@ -116,6 +113,7 @@ inline void CRYPTON::about(){
 
 void CRYPTON::run(){
 
+	CRYPTON crypt;
 	about();
 	
 	std::string filename;
@@ -127,6 +125,7 @@ void CRYPTON::run(){
 	std::cout << "\n";
 	std::cout << std::setw(10) << "" << Red << "[ PRESS ENTER TO RUN ]" << Reset;
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	std::cout << std::flush;
 	system("clear");
 	about();
 
@@ -136,85 +135,84 @@ void CRYPTON::run(){
 		std::cin >> choice;
 		std::cin.ignore();
 
-	if(choice == "e"){
+		if(choice == "e"){
 
-		label:
-			std::cout << "\n";
-			std::cout << std::setw(10) << "" << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
-			std::getline(std::cin,filename);
+			label:
+				std::cout << "\n";
+				std::cout << std::setw(10) << "" << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
+				std::getline(std::cin,filename);
 
-		std::ifstream infile;
+			std::ifstream infile;
 
-		if(!fileCheck(filename)){
-			system("clear");
-			about();
-			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
-			goto label; 
-		}
-		infile.open(filename);
-		std::cout << "\n";
-		condition:
-			std::cout << std::setw(10) << "" << "(PASSWORD) > "; 
-			password = getpass("");
-			if(!checkPassword(password)){
+			if(!fileCheck(filename)){
 				system("clear");
 				about();
 				std::cout << "\n";
-				std::cout << Red << std::setw(10) << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << "\n\n";
-				goto condition;
+				std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
+				goto label; 
 			}
-		while(infile.get(car)){
-			clr_msg+=car;	
-		}
-		infile.close();
-		std::ofstream ofile(filename);
-		ofile << aserpCrypt(clr_msg,password);
-		ofile.close();
-
-		system("clear");
-		about();
-		std::cout << "\n";
-		std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
-	}
-	else if(choice == "d"){
-
-		labs:
+			infile.open(filename);
 			std::cout << "\n";
-			std::cout << std::setw(10) << "" << "(FILE TO DECRYPT (Input: /Absolute/path/to/file.extension)) > ";
-			std::getline(std::cin,filename);
-
-		std::ifstream infile;
-
-		if(!fileCheck(filename)){
+			condition:
+				std::cout << std::setw(10) << "" << "(PASSWORD) > "; 
+				password = getpass("");
+				if(!checkPassword(password)){
+					system("clear");
+					about();
+					std::cout << "\n";
+					std::cout << Red << std::setw(10) << "" << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << "\n\n";
+					goto condition;
+				}
+			while(infile.get(car)){
+				clr_msg+=car;	
+			}
+			infile.close();
+			std::ofstream ofile(filename);
+			ofile << crypt.aserp(clr_msg,password,choice);
+			ofile.close();
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
-			goto labs;
+			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
 		}
-		infile.open(filename);
-		std::cout << "\n";
-		std::cout << std::setw(10) << "" << "(PASSWORD) > ";
-		password = getpass("");
-		while(infile.get(car)){
-			clr_msg+=car;
-		}
-		infile.close();
-		std::ofstream ofile(filename);
-		ofile << aserpDcrypt(clr_msg,password);
-		ofile.close();
+		else if(choice == "d"){
 
-		system("clear");
-		about();
-		std::cout << "\n";
-		std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
-	}
-	else{
-		system("clear");
-		about();
-		goto validChoice;
-	}
+			labs:
+				std::cout << "\n";
+				std::cout << std::setw(10) << "" << "(FILE TO DECRYPT (Input: /Absolute/path/to/file.extension)) > ";
+				std::getline(std::cin,filename);
+
+			std::ifstream infile;
+
+			if(!fileCheck(filename)){
+				system("clear");
+				about();
+				std::cout << "\n";
+				std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
+				goto labs;
+			}
+			infile.open(filename);
+			std::cout << "\n";
+			std::cout << std::setw(10) << "" << "(PASSWORD) > ";
+			password = getpass("");
+			while(infile.get(car)){
+				clr_msg+=car;
+			}
+			infile.close();
+			std::ofstream ofile(filename);
+			ofile << crypt.aserp(clr_msg,password,choice);
+			ofile.close();
+
+			system("clear");
+			about();
+			std::cout << "\n";
+			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
+		}
+		else{
+			system("clear");
+			about();
+			goto validChoice;
+		}
 	std::cout << "\n";
 	return;
 }
