@@ -59,8 +59,8 @@ inline bool CRYPTON::fileCheck(const std::string &filename){
 	return false;
 }
 
-std::string CRYPTON::aserp(std::string text, std::string password, std::string choice){
-	std::string inter, ciphertext, recovered;
+std::string CRYPTON::aserpCrypt(std::string text, std::string password){
+	std::string inter, ciphertext;
 	std::string iv(password+password);
 
 	try{
@@ -69,34 +69,37 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 		HKDF<SHA256> hkdf;
 		hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
 		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
-		if(choice == "e"){	
-			EAX<AES>::Encryption enc1;
-			EAX<Serpent>::Encryption enc2;
-			enc1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
-			enc2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
-			StringSource(text, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(inter)));
-			StringSource(inter, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(ciphertext)));
-		}
-		else{
-			EAX<AES>::Decryption dec1;
-			EAX<Serpent>::Decryption dec2;
-			dec1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
-			dec2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
-			StringSource(text, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
-			StringSource(inter, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
-		}
+		EAX<AES>::Encryption enc1;
+		EAX<Serpent>::Encryption enc2;
+		enc1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
+		enc2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
+		StringSource(text, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(inter)));
+		StringSource(inter, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(ciphertext)));
 	}
 	catch(Exception& ex){
-		std::cerr << "ERROR: " << ex.what() << std::endl;
+		std::cerr << "ERROR: " << ex.what() << "\n";
 		return 0;
 	}
-	if(choice == "e"){
-		return ciphertext;
-		
-	}
-	else{
-		return recovered;
-	}
+	return ciphertext;
+}
+
+std::string CRYPTON::aserpDcrypt(std::string text, std::string password){
+	std::string inter, recovered;
+	std::string iv(password+password);
+
+	SecByteBlock key1(AES::MAX_KEYLENGTH+AES::BLOCKSIZE);
+	SecByteBlock key2(Serpent::MAX_KEYLENGTH+Serpent::BLOCKSIZE);
+	HKDF<SHA256> hkdf;
+	hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
+	hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
+	EAX<AES>::Decryption dec1;
+	EAX<Serpent>::Decryption dec2;
+	dec1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
+	dec2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
+	StringSource(text, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+	StringSource(inter, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+
+	return recovered;
 }
 
 inline void CRYPTON::about(){
@@ -166,7 +169,7 @@ void CRYPTON::run(){
 		}
 		infile.close();
 		std::ofstream ofile(filename);
-		ofile << aserp(clr_msg,password,choice);
+		ofile << aserpCrypt(clr_msg,password);
 		ofile.close();
 
 		system("clear");
@@ -199,7 +202,7 @@ void CRYPTON::run(){
 		}
 		infile.close();
 		std::ofstream ofile(filename);
-		ofile << aserp(clr_msg,password,choice);
+		ofile << aserpDcrypt(clr_msg,password);
 		ofile.close();
 
 		system("clear");
