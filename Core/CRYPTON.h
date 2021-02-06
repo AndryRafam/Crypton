@@ -16,7 +16,6 @@ class CRYPTON{
 		
 	public:
 		CRYPTON(void);
-		
 		void run();
 		~CRYPTON(void);
 };
