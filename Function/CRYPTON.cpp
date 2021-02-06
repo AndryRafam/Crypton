@@ -140,8 +140,6 @@ void CRYPTON::run(){
 				std::cout << std::setw(10) << "" << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
 				std::getline(std::cin,filename);
 
-			std::ifstream infile;
-
 			if(!fileCheck(filename)){
 				system("clear");
 				about();
@@ -149,6 +147,7 @@ void CRYPTON::run(){
 				std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
 				goto label; 
 			}
+			std::ifstream infile;
 			infile.open(filename);
 			std::cout << "\n";
 			condition:
