@@ -61,14 +61,15 @@ inline bool CRYPTON::fileCheck(const std::string &filename){
 
 std::string CRYPTON::aserp(std::string text, std::string password, std::string choice){
 	std::string inter, ciphertext, recovered;
-	std::string iv(password+password);
+	std::string iv1(password+password);
+	std::string iv2(password+password);
 
 	try{
 		SecByteBlock key1(AES::MAX_KEYLENGTH+AES::BLOCKSIZE);
 		SecByteBlock key2(Serpent::MAX_KEYLENGTH+Serpent::BLOCKSIZE);
 		HKDF<SHA256> hkdf;
-		hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
-		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), (const byte*)iv.data(), iv.size(), NULL, 0);
+		hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), (const byte*)iv1.data(), iv1.size(), NULL, 0);
+		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), (const byte*)iv2.data(), iv2.size(), NULL, 0);
 		EAX<AES>::Encryption enc1;
 		EAX<Serpent>::Encryption enc2;
 		EAX<AES>::Decryption dec1;
