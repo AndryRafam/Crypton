@@ -130,7 +130,7 @@ void CRYPTON::run(){
 
 	validChoice:
 		std::cout << "\n";
-		std::cout << std::setw(10) << "" << "(ENCRYPT OR DECRYPT ? (e or d)) > ";
+		std::cout << "(ENCRYPT OR DECRYPT ? (e or d)) > ";
 		std::cin >> choice;
 		std::cin.ignore();
 
@@ -138,22 +138,21 @@ void CRYPTON::run(){
 
 			label:
 				std::cout << "\n";
-				std::cout << std::setw(10) << "" << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
+				std::cout << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
 				std::getline(std::cin,filename);
 
 			if(!fileCheck(filename)){
 				system("clear");
 				about();
 				std::cout << "\n";
-				std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
+				std::cout << Red << "FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
 				goto label; 
 			}
 			std::ifstream infile;
 			infile.open(filename);
 			std::cout << "\n";
-			condition:
-				std::cout << std::setw(10) << "" << "(PASSWORD) > "; 
-				password = getpass("");
+			condition: 
+				password = getpass("(PASSWORD) > ");
 				if(!checkPassword(password)){
 					system("clear");
 					about();
@@ -177,10 +176,9 @@ void CRYPTON::run(){
 
 			labs:
 				std::cout << "\n";
-				std::cout << std::setw(10) << "" << "(FILE TO DECRYPT (Input: /Absolute/path/to/file.extension)) > ";
+				std::cout << "(FILE TO DECRYPT (Input: /Absolute/path/to/file.extension)) > ";
 				std::getline(std::cin,filename);
 
-			std::ifstream infile;
 
 			if(!fileCheck(filename)){
 				system("clear");
@@ -189,10 +187,10 @@ void CRYPTON::run(){
 				std::cout << Red << std::setw(10) << "" << " FILE DOESN'T EXIST. PLEASE TRY AGAIN." << Reset;
 				goto labs;
 			}
+			std::ifstream infile;
 			infile.open(filename);
 			std::cout << "\n";
-			std::cout << std::setw(10) << "" << "(PASSWORD) > ";
-			password = getpass("");
+			password = getpass("(PASSWORD) > ");
 			while(infile.get(car)){
 				clr_msg+=car;
 			}
