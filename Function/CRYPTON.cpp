@@ -1,3 +1,5 @@
+#ifdef __linux__
+
 #include <iostream>
 #include <string>
 #include <exception>
@@ -11,6 +13,7 @@
 #include <cryptopp/filters.h>
 #include <cryptopp/files.h>
 #include <cryptopp/cryptlib.h>
+#include <cryptopp/hex.h>
 #include <cryptopp/eax.h>
 #include <cryptopp/sha.h>
 #include <cryptopp/hkdf.h>
@@ -60,7 +63,7 @@ inline bool CRYPTON::fileCheck(const std::string &filename){
 }
 
 std::string CRYPTON::aserp(std::string text, std::string password, std::string choice){
-	std::string inter, ciphertext, recovered;
+	std::string inter, ciphertext, recovered, hexencoded;
 	std::string iv1(password+password);
 	std::string iv2(password+password);
 
@@ -79,11 +82,13 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 			enc2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
 			StringSource(text, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(inter)));
 			StringSource(inter, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(ciphertext)));
+			StringSource(ciphertext, true, new HexEncoder(new StringSink(hexencoded)));
 		}
 		else{
 			dec1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
 			dec2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
-			StringSource(text, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
+			StringSource(text, true, new HexDecoder(new StringSink(hexencoded)));
+			StringSource(hexencoded, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
 			StringSource(inter, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
 		}
 	}
@@ -92,7 +97,7 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 		exit(0);
 	}
 	if(choice == "e"){
-		return ciphertext;
+		return hexencoded;
 		
 	}
 	else{
@@ -157,7 +162,7 @@ void CRYPTON::run(){
 					system("clear");
 					about();
 					std::cout << "\n";
-					std::cout << Red << std::setw(10) << "" << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ABOVE. " << Reset << "\n\n";
+					std::cout << Red << std::setw(10) << "" << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ON README.md. " << Reset << "\n\n";
 					goto condition;
 				}
 			while(infile.get(car)){
@@ -171,7 +176,14 @@ void CRYPTON::run(){
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY ENCRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";
+			std::cout << Red << std::setw(10) << "" <<"(FILE SUCCESSFULLY ENCRYPTED.)" << Reset << "\n\n";
+			std::ifstream Ifile(filename);
+			std::string line;
+			while(getline(Ifile,line)){
+				std::cout << line;
+			}
+			infile.close();
+			std::cout << "\n";
 		}
 		else if(choice == "d"){
 
@@ -216,3 +228,5 @@ void CRYPTON::run(){
 }
 
 CRYPTON::~CRYPTON(void){ }
+
+#endif
