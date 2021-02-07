@@ -89,7 +89,7 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 	}
 	catch(Exception& ex){
 		std::cerr << "ERROR: " << ex.what() << std::endl;
-		return 0;
+		exit(0);
 	}
 	if(choice == "e"){
 		return ciphertext;
@@ -164,7 +164,8 @@ void CRYPTON::run(){
 				clr_msg+=car;	
 			}
 			infile.close();
-			std::ofstream ofile(filename);
+			std::ofstream ofile;
+			ofile.open(filename, std::ofstream::out | std::ofstream::trunc);
 			ofile << aserp(clr_msg,password,choice);
 			ofile.close();
 			system("clear");
@@ -195,7 +196,8 @@ void CRYPTON::run(){
 				clr_msg+=car;
 			}
 			infile.close();
-			std::ofstream ofile(filename);
+			std::ofstream ofile;
+			ofile.open(filename, std::ofstream::out | std::ofstream::trunc);
 			ofile << aserp(clr_msg,password,choice);
 			ofile.close();
 
