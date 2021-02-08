@@ -11,8 +11,9 @@ by NIST (National Institute of Standards and Technology).
 SERPENT is ranked second behind AES.
 AES has been adopted by the US government and is now used worldwide.
 
-<h4 align="left"> Encrypting (Open your file to check the result) </h4>
+<h4 align="left"> Encrypting </h4>
 
+![]Output(https://github.com/AndryRafam/Program-Output/blob/master/crypt.gif)
 
 
 <h4 align="left"> Decrypting (Open your file to check the result) </h4>
