@@ -17,6 +17,7 @@ AES has been adopted by the US government and is now used worldwide.
 
 <h4 align="left"> Decrypting (Open your file to check the result) </h4>
 
+![Output](https://github.com/AndryRafam/Program-Output/blob/master/Dcrypt.gif)
 
 
 <h3 align="left"> PASSWORD RULES </h3>
