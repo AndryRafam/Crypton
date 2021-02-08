@@ -72,8 +72,8 @@ std::string CRYPTON::scramble(std::string passphrase){
 
 std::string CRYPTON::aserp(std::string text, std::string password, std::string choice){
 	std::string inter, ciphertext, recovered, hexencoded;
-	std::string iv1(password+password);
-	std::string iv2(password+password);
+	std::string iv1(scramble(password)+scramble(password));
+	std::string iv2(scramble(password)+scramble(password));
 
 	try{
 		SecByteBlock key1(AES::MAX_KEYLENGTH+AES::BLOCKSIZE);
