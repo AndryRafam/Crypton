@@ -5,7 +5,11 @@
 
 <h1 align="center"> CRYPTON </h1>
 
-	CRYPTON is a file double encryption (and decryption) program based on AES-256, Serpent-256 and SHA-256. AES (formely known as Rijndael from its designer Vincent Rijmen and Joan Daemen), is the winner of AES competition (Advanced Encryption Standard competition) organizedby NIST (National Institute of Standards and Technology). SERPENT is ranked second behind AES. AES has been adopted by the US government and is now used worldwide.
+	CRYPTON is a file double encryption (and decryption) program based on AES-256, Serpent-256 and SHA-256. 
+	AES (formely known as Rijndael from its designer Vincent Rijmen and Joan Daemen),
+	is the winner of AES competition (Advanced Encryption Standard competition) organized 
+	by NIST (National Institute of Standards and Technology). 
+	SERPENT is ranked second behind AES. AES has been adopted by the US government and is now used worldwide.
 
 <h4 align="left"> Encrypting </h4>
 
