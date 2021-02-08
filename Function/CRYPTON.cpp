@@ -62,6 +62,14 @@ inline bool CRYPTON::fileCheck(const std::string &filename){
 	return false;
 }
 
+std::string CRYPTON::scramble(std::string passphrase){
+	int n = passphrase.size();
+	for(auto i = 0; i < n/2; i++){
+		std::swap(passphrase[i],passphrase[n-1-i]);
+	}
+	return passphrase;
+}
+
 std::string CRYPTON::aserp(std::string text, std::string password, std::string choice){
 	std::string inter, ciphertext, recovered, hexencoded;
 	std::string iv1(password+password);
