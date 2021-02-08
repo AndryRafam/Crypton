@@ -70,9 +70,9 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 	try{
 		SecByteBlock key1(AES::MAX_KEYLENGTH+AES::BLOCKSIZE);
 		SecByteBlock key2(Serpent::MAX_KEYLENGTH+Serpent::BLOCKSIZE);
-		HKDF<SHA256> hkdf;
-		hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), (const byte*)iv1.data(), iv1.size(), NULL, 0);
-		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), (const byte*)iv2.data(), iv2.size(), NULL, 0);
+		HKDF<SHA384> hkdf;
+		hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0); 
+		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
 		EAX<AES>::Encryption enc1;
 		EAX<Serpent>::Encryption enc2;
 		EAX<AES>::Decryption dec1;
@@ -176,7 +176,7 @@ void CRYPTON::run(){
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" <<"(FILE SUCCESSFULLY ENCRYPTED.)" << Reset << "\n\n";
+			std::cout << Red << std::setw(10) << "" <<"(FILE SUCCESSFULLY ENCRYPTED)" << Reset << "\n\n";
 			std::ifstream Ifile(filename);
 			std::string line;
 			while(getline(Ifile,line)){
@@ -216,7 +216,7 @@ void CRYPTON::run(){
 			system("clear");
 			about();
 			std::cout << "\n";
-			std::cout << Red << std::setw(10) << "" <<"FILE SUCCESSFULLY DECRYPTED." << Reset << " (Check your file to see the result)" << "\n\n";	
+			std::cout << Red << std::setw(10) << "" <<"(FILE SUCCESSFULLY DECRYPTED)" << Reset << " (Check your file to see the result)" << "\n\n";	
 		}
 		else{
 			system("clear");
