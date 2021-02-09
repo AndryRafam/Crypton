@@ -65,29 +65,29 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 	std::string inter, ciphertext, recovered, hexencoded;
 
 	try{
-		SecByteBlock key1(AES::MAX_KEYLENGTH);
-		SecByteBlock key2(Serpent::MAX_KEYLENGTH);
-		SecByteBlock iv1(AES::BLOCKSIZE);
-		SecByteBlock iv2(Serpent::BLOCKSIZE);
+		byte key1[AES::MAX_KEYLENGTH];
+		byte key2[Serpent::MAX_KEYLENGTH];
+		byte iv1[AES::BLOCKSIZE];
+		byte iv2[Serpent::BLOCKSIZE];
 		HKDF<SHA256> hkdf;
-		hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0); 
-		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
-		hkdf.DeriveKey(iv1, iv1.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
-		hkdf.DeriveKey(iv2, iv2.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
+		hkdf.DeriveKey(key1, sizeof(key1), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0); 
+		hkdf.DeriveKey(key2, sizeof(key2), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
+		hkdf.DeriveKey(iv1, sizeof(iv1), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
+		hkdf.DeriveKey(iv2, sizeof(iv2), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
 		EAX<AES>::Encryption enc1;
 		EAX<Serpent>::Encryption enc2;
 		EAX<AES>::Decryption dec1;
 		EAX<Serpent>::Decryption dec2;
 		if(choice == "e"){	
-			enc1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
-			enc2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
+			enc1.SetKeyWithIV(key1, sizeof(key1), iv1, sizeof(iv1));
+			enc2.SetKeyWithIV(key2, sizeof(key2), iv2, sizeof(iv2));
 			StringSource(text, true, new AuthenticatedEncryptionFilter(enc2, new StringSink(inter)));
 			StringSource(inter, true, new AuthenticatedEncryptionFilter(enc1, new StringSink(ciphertext)));
 			StringSource(ciphertext, true, new HexEncoder(new StringSink(hexencoded)));
 		}
 		else{
-			dec1.SetKeyWithIV(key1, AES::MAX_KEYLENGTH, key1+AES::MAX_KEYLENGTH);
-			dec2.SetKeyWithIV(key2, Serpent::MAX_KEYLENGTH, key2+Serpent::MAX_KEYLENGTH);
+			dec1.SetKeyWithIV(key1, sizeof(key1), iv1, sizeof(iv1));
+			dec2.SetKeyWithIV(key2, sizeof(key2), iv2, sizeof(iv2));
 			StringSource(text, true, new HexDecoder(new StringSink(hexencoded)));
 			StringSource(hexencoded, true, new AuthenticatedDecryptionFilter(dec1, new StringSink(inter), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
 			StringSource(inter, true, new AuthenticatedDecryptionFilter(dec2, new StringSink(recovered), AuthenticatedDecryptionFilter::THROW_EXCEPTION));
