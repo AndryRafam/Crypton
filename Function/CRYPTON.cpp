@@ -11,7 +11,6 @@
 #include <algorithm>
 #include <sys/types.h>
 #include <cryptopp/filters.h>
-#include <cryptopp/files.h>
 #include <cryptopp/cryptlib.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/eax.h>
@@ -72,15 +71,17 @@ std::string CRYPTON::scramble(std::string passphrase){
 
 std::string CRYPTON::aserp(std::string text, std::string password, std::string choice){
 	std::string inter, ciphertext, recovered, hexencoded;
-	std::string iv1(scramble(password)+scramble(password));
-	std::string iv2(scramble(password)+scramble(password));
 
 	try{
-		SecByteBlock key1(AES::MAX_KEYLENGTH+AES::BLOCKSIZE);
-		SecByteBlock key2(Serpent::MAX_KEYLENGTH+Serpent::BLOCKSIZE);
-		HKDF<SHA384> hkdf;
+		SecByteBlock key1(AES::MAX_KEYLENGTH);
+		SecByteBlock key2(Serpent::MAX_KEYLENGTH);
+		SecByteBlock iv1(AES::BLOCKSIZE);
+		SecByteBlock iv2(Serpent::BLOCKSIZE);
+		HKDF<SHA256> hkdf;
 		hkdf.DeriveKey(key1, key1.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0); 
 		hkdf.DeriveKey(key2, key2.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
+		hkdf.DeriveKey(iv1, iv1.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
+		hkdf.DeriveKey(iv2, iv2.size(), (const byte*)password.data(), password.size(), NULL, 0, NULL, 0);
 		EAX<AES>::Encryption enc1;
 		EAX<Serpent>::Encryption enc2;
 		EAX<AES>::Decryption dec1;
