@@ -65,8 +65,8 @@ std::string CRYPTON::aserp(std::string text, std::string password, std::string c
 	std::string inter, ciphertext, recovered, hexencoded;
 
 	try{
-		SecByteBlock key1(AES::MAX_KEYLENGTH+AES::BLOCKSIZE);
-		SecByteBlock key2(Serpent::MAX_KEYLENGTH+Serpent::BLOCKSIZE);
+		SecByteBlock key1(AES::MAX_KEYLENGTH);
+		SecByteBlock key2(Serpent::MAX_KEYLENGTH);
 		SecByteBlock iv1(AES::BLOCKSIZE);
 		SecByteBlock iv2(Serpent::BLOCKSIZE);
 		HKDF<SHA256> hkdf;
