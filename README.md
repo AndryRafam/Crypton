@@ -4,7 +4,6 @@
 ![](https://img.shields.io/badge/Algorithm-SHA-orange.svg?style=plastic&logo)
 
 <h1 align="center"> CRYPTON </h1>
-
 	CRYPTON is a file double encryption (and decryption) program based on AES-256, Serpent-256 and SHA-256. 
 	AES (formely known as Rijndael from its designer Vincent Rijmen and Joan Daemen),
 	is the winner of AES competition (Advanced Encryption Standard competition) organized 
