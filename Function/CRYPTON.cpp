@@ -217,7 +217,7 @@ void CRYPTON::run(){
 			std::ifstream infile;
 			infile.open(filename);
 			std::cout << "\n";
-			password = getpass("(PASSWORD) > ");
+			password = getpass("(ENTER PASSWORD) > ");
 			while(infile.get(car)){
 				clr_msg+=car;
 			}
