@@ -125,7 +125,7 @@ void CRYPTON::run(){
 	std::string filename;
 	std::string clr_msg = "";
 	std::string choice;
-	std::string password;
+	std::string password, passphrase;
 	char car;
 
 	std::cout << "\n";
@@ -142,6 +142,8 @@ void CRYPTON::run(){
 
 		if(choice == "e"){
 
+			system("clear");
+			about();
 			label:
 				std::cout << "\n";
 				std::cout << "(FILE TO ENCRYPT (Input: /Absolute/path/to/file.extension)) > ";
@@ -158,7 +160,7 @@ void CRYPTON::run(){
 			infile.open(filename);
 			std::cout << "\n";
 			condition: 
-				password = getpass("(PASSWORD) > ");
+				password = getpass("(ENTER PASSWORD) > ");
 				if(!checkPassword(password)){
 					system("clear");
 					about();
@@ -166,6 +168,15 @@ void CRYPTON::run(){
 					std::cout << Red << std::setw(10) << "" << " SORRY, PASSWORD NOT ENOUGH COMPLEX. TRY AGAIN. READ THE PASSWORD RULES ON README.md. " << Reset << "\n\n";
 					goto condition;
 				}
+			std::cout << "\n";
+			passphrase = getpass("(CONFIRM PASSWORD) > ");
+			if(passphrase!=password){
+				system("clear");
+				about();
+				std::cout << "\n";
+				std::cout << Red << std::setw(10) << "" << " SORRY, DOESN'T MATCH. TRY AGAIN." << Reset << "\n\n";
+				goto condition;
+			}
 			while(infile.get(car)){
 				clr_msg+=car;	
 			}
@@ -188,6 +199,8 @@ void CRYPTON::run(){
 		}
 		else if(choice == "d"){
 
+			system("clear");
+			about();
 			labs:
 				std::cout << "\n";
 				std::cout << "(FILE TO DECRYPT (Input: /Absolute/path/to/file.extension)) > ";
