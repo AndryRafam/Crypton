@@ -20,6 +20,7 @@
 
 
 <h3 align="left"> PASSWORD RULES </h3>
+<h4 aligh="left"> Be aware that if you want to decrypt your file, you have only one chance. If you enter the wrong password, your file will be deleted. </h4>
 
 	1) Password must be at least 12 Characters long (At least 12 characters).
 	2) Password must contains at least ONE Upper character.
